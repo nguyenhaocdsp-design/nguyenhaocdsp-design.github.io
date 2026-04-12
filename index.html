@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Đăng nhập - Chợ Đồ Học Sinh</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #eef2ff, #f8fafc);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+.box {
+  background: white;
+  padding: 40px 35px;
+  border-radius: 16px;
+  width: 360px;
+  text-align: center;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.12);
+}
+.logo { font-size: 40px; margin-bottom: 8px; }
+h2 { font-size: 22px; color: #1e293b; margin-bottom: 6px; }
+.subtitle { font-size: 13px; color: #94a3b8; margin-bottom: 28px; }
+input {
+  width: 100%;
+  padding: 12px 14px;
+  margin-bottom: 12px;
+  border-radius: 10px;
+  border: 1.5px solid #e2e8f0;
+  font-size: 14px;
+  outline: none;
+  transition: border 0.2s;
+  color: #1e293b;
+}
+input:focus { border-color: #4a6cf7; box-shadow: 0 0 0 3px rgba(74,108,247,0.1); }
+button {
+  width: 100%;
+  padding: 13px;
+  background: #4a6cf7;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+  margin-top: 4px;
+  transition: background 0.2s, transform 0.1s;
+}
+button:hover { background: #3b5de0; }
+button:active { transform: scale(0.98); }
+button:disabled { background: #a5b4fc; cursor: not-allowed; }
+.err {
+  color: #ef4444;
+  font-size: 13px;
+  margin-top: 10px;
+  min-height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+.success-box { padding: 10px 0; }
+.success-box .icon { font-size: 52px; margin-bottom: 12px; }
+.success-box h3 { font-size: 20px; color: #4a6cf7; margin-bottom: 4px; }
+.success-box p { font-size: 13px; color: #94a3b8; margin-bottom: 20px; }
+.loader {
+  margin: 0 auto;
+  border: 3px solid #e2e8f0;
+  border-top: 3px solid #4a6cf7;
+  border-radius: 50%;
+  width: 28px; height: 28px;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+<div class="box" id="box">
+  <div class="logo">🛒</div>
+  <h2>Chợ Đồ Học Sinh</h2>
+  <p class="subtitle">Đăng nhập để tiếp tục</p>
+
+  <input id="username" placeholder="Tên đăng nhập" autocomplete="off">
+  <input id="password" type="password" placeholder="Mật khẩu">
+  <button id="btn" onclick="login()">Đăng nhập</button>
+  <p class="err" id="errmsg"></p>
+</div>
+
+<script>
+const API = "https://script.google.com/macros/s/AKfycbxotCkVPuavvf3p-p3D-SYM5ldg4zqO4f3WqzUTaLYXmBXm7bEfm0i4OcDIs8qBMQ7R/exec";   // ← Thay bằng URL Web App của bạn
+
+function login() {
+  const username = document.getElementById("username").value.trim();
+  const password = document.getElementById("password").value.trim();
+  const btn = document.getElementById("btn");
+  const errmsg = document.getElementById("errmsg");
+
+  errmsg.textContent = "";
+
+  if (!username || !password) {
+    errmsg.textContent = "⚠️ Vui lòng nhập đầy đủ thông tin!";
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = "Đang đăng nhập...";
+
+  fetch(API, {
+    method: "POST",
+    redirect: "follow",
+    headers: { "Content-Type": "text/plain;charset=utf-8" },
+    body: JSON.stringify({ action: "login", username, password })
+  })
+  .then(r => r.text())
+  .then(text => {
+    let data;
+    try { data = JSON.parse(text); }
+    catch(e) { throw new Error("Lỗi phản hồi server"); }
+
+    if (data.status === "success") {
+      localStorage.setItem("user", JSON.stringify(data));
+
+      document.getElementById("box").innerHTML = `
+        <div class="success-box">
+          <div class="icon">🎉</div>
+          <h3>${data.ho_ten}</h3>
+          <p>Đăng nhập thành công! Đang chuyển trang...</p>
+          <div class="loader"></div>
+        </div>
+      `;
+
+      setTimeout(() => {
+        const role = String(data.role || "").toLowerCase().trim();
+        
+        if (role === "teacher") {
+          window.location.href = "teacher.html";
+        } else if (role === "student") {
+          window.location.href = "student.html";
+        } else {
+          alert("Vai trò không xác định: " + data.role);
+          window.location.href = "index.html";
+        }
+      }, 1400);
+
+    } else if (data.status === "fail") {
+      errmsg.textContent = "❌ Sai tài khoản hoặc mật khẩu!";
+      btn.disabled = false;
+      btn.textContent = "Đăng nhập";
+    } else {
+      errmsg.textContent = "❌ Lỗi: " + (data.message || "Không xác định");
+      btn.disabled = false;
+      btn.textContent = "Đăng nhập";
+    }
+  })
+  .catch(err => {
+    console.error(err);
+    errmsg.textContent = "❌ Không kết nối được API! Kiểm tra F12.";
+    btn.disabled = false;
+    btn.textContent = "Đăng nhập";
+  });
+}
+
+document.addEventListener("keydown", e => { if (e.key === "Enter") login(); });
+</script>
+</body>
+</html>

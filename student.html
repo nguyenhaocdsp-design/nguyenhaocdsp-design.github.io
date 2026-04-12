@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Học sinh - Chợ Đồ</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Nunito', Arial, sans-serif; background: #f0f4ff; min-height: 100vh; }
+
+/* HEADER */
+.header {
+  background: linear-gradient(135deg, #4a6cf7, #6a3de8);
+  color: white;
+  padding: 14px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 4px 16px rgba(74,108,247,0.35);
+  position: sticky; top: 0; z-index: 100;
+}
+.header h1 { font-size: 18px; font-weight: 800; letter-spacing: -0.3px; }
+.header-right { display: flex; align-items: center; gap: 12px; }
+.user-name { font-size: 14px; opacity: 0.92; font-weight: 600; }
+.btn-logout {
+  background: rgba(255,255,255,0.18);
+  border: 1.5px solid rgba(255,255,255,0.4);
+  color: white;
+  padding: 6px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  font-family: inherit;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+.btn-logout:hover { background: rgba(255,255,255,0.3); }
+
+/* CONTAINER */
+.container { max-width: 1100px; margin: 24px auto; padding: 0 16px; }
+
+/* TABS */
+.tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  background: white;
+  padding: 8px;
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+.tab-btn {
+  padding: 10px 20px;
+  border-radius: 9px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 14px;
+  font-family: inherit;
+  color: #64748b;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+.tab-btn.active { background: #4a6cf7; color: white; box-shadow: 0 4px 12px rgba(74,108,247,0.35); }
+.tab-btn:hover:not(.active) { background: #f1f5f9; color: #1e293b; }
+
+/* SECTIONS */
+.section { display: none; }
+.section.active { display: block; }
+
+/* GRID */
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 18px; }
+
+/* CARD */
+.card {
+  background: white;
+  border-radius: 16px;
+  padding: 0;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.11); }
+.card-img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  display: block;
+}
+.card-img-placeholder {
+  width: 100%; height: 180px;
+  background: linear-gradient(135deg, #e8eeff, #f0f4ff);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 40px; color: #c7d2fe;
+}
+.card-body { padding: 14px 16px 16px; }
+.card-title { font-size: 15px; font-weight: 700; color: #1e293b; margin-bottom: 4px; }
+.card-owner { font-size: 13px; color: #4a6cf7; margin-bottom: 6px; font-weight: 600; }
+.card-desc { font-size: 13px; color: #64748b; line-height: 1.5; margin-bottom: 14px; }
+
+/* BUTTONS */
+.btn-exchange {
+  width: 100%;
+  padding: 10px;
+  background: #eff6ff;
+  color: #3b82f6;
+  border: 1.5px solid #bfdbfe;
+  border-radius: 9px;
+  cursor: pointer;
+  font-size: 13px;
+  font-family: inherit;
+  font-weight: 700;
+  transition: all 0.2s;
+}
+.btn-exchange:hover { background: #3b82f6; color: white; border-color: #3b82f6; }
+
+.btn-green {
+  flex: 1; padding: 9px;
+  background: #f0fdf4; color: #16a34a;
+  border: 1.5px solid #bbf7d0;
+  border-radius: 8px; cursor: pointer;
+  font-family: inherit; font-size: 13px; font-weight: 700;
+  transition: all 0.2s;
+}
+.btn-green:hover { background: #16a34a; color: white; }
+
+.btn-red {
+  flex: 1; padding: 9px;
+  background: #fef2f2; color: #dc2626;
+  border: 1.5px solid #fecaca;
+  border-radius: 8px; cursor: pointer;
+  font-family: inherit; font-size: 13px; font-weight: 700;
+  transition: all 0.2s;
+}
+.btn-red:hover { background: #dc2626; color: white; }
+
+.btn-row { display: flex; gap: 8px; }
+
+/* STATUS BADGES */
+.badge {
+  display: inline-block; font-size: 11px; font-weight: 700;
+  padding: 3px 10px; border-radius: 20px; margin-bottom: 8px;
+}
+.badge-pending  { background: #fef3c7; color: #b45309; }
+.badge-approved { background: #dcfce7; color: #166534; }
+.badge-rejected { background: #fee2e2; color: #991b1b; }
+
+/* FORM */
+.form-card {
+  background: white;
+  border-radius: 16px;
+  padding: 28px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+  max-width: 540px;
+}
+.form-card h3 { font-size: 17px; color: #1e293b; margin-bottom: 20px; font-weight: 800; }
+.form-group { margin-bottom: 16px; }
+.form-group label { display: block; font-size: 13px; color: #475569; margin-bottom: 7px; font-weight: 700; }
+.form-group input, .form-group textarea {
+  width: 100%;
+  padding: 11px 14px;
+  border-radius: 10px;
+  border: 1.5px solid #e2e8f0;
+  font-size: 14px;
+  font-family: inherit;
+  transition: border 0.2s;
+  color: #1e293b;
+}
+.form-group input:focus, .form-group textarea:focus {
+  outline: none; border-color: #4a6cf7;
+  box-shadow: 0 0 0 3px rgba(74,108,247,0.12);
+}
+.form-group textarea { resize: vertical; min-height: 90px; }
+.image-preview {
+  width: 100%; max-height: 220px; object-fit: contain;
+  border: 2px dashed #c7d2fe;
+  border-radius: 12px; margin-top: 10px; display: none;
+  background: #f0f4ff;
+}
+.btn-submit {
+  background: linear-gradient(135deg, #4a6cf7, #6a3de8);
+  color: white; border: none;
+  padding: 13px 28px;
+  border-radius: 10px; cursor: pointer;
+  font-size: 15px; font-family: inherit; font-weight: 700;
+  width: 100%;
+  box-shadow: 0 4px 14px rgba(74,108,247,0.35);
+  transition: opacity 0.2s;
+}
+.btn-submit:hover { opacity: 0.9; }
+.btn-submit:disabled { background: #a5b4fc; box-shadow: none; cursor: not-allowed; }
+.msg { font-size: 13px; margin-top: 12px; min-height: 18px; font-weight: 600; }
+.msg.ok  { color: #16a34a; }
+.msg.err { color: #ef4444; }
+
+/* SECTION HEADER */
+.section-title {
+  font-size: 16px; font-weight: 800; color: #1e293b;
+  margin-bottom: 16px; padding-bottom: 10px;
+  border-bottom: 2px solid #e8eeff;
+}
+
+/* EMPTY / LOADING */
+.empty { text-align: center; padding: 60px 20px; color: #94a3b8; font-size: 14px; font-weight: 600; }
+.empty .empty-icon { font-size: 40px; margin-bottom: 10px; }
+.loading-text { text-align: center; padding: 40px; color: #94a3b8; font-size: 14px; }
+
+/* MODAL */
+.modal-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.5); z-index: 1000;
+  align-items: center; justify-content: center;
+  padding: 16px;
+}
+.modal-overlay.show { display: flex; }
+.modal {
+  background: white; border-radius: 18px;
+  padding: 28px; max-width: 420px; width: 100%;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.2);
+  animation: popIn 0.25s ease;
+}
+@keyframes popIn {
+  from { transform: scale(0.9); opacity: 0; }
+  to   { transform: scale(1);   opacity: 1; }
+}
+.modal h3 { font-size: 16px; font-weight: 800; margin-bottom: 16px; color: #1e293b; }
+.modal img { width: 100%; height: 200px; object-fit: cover; border-radius: 10px; margin-bottom: 14px; }
+.modal-img-placeholder {
+  width: 100%; height: 200px;
+  background: linear-gradient(135deg, #e8eeff, #f0f4ff);
+  border-radius: 10px; margin-bottom: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 48px; color: #c7d2fe;
+}
+.modal-info p { font-size: 14px; color: #475569; margin-bottom: 8px; line-height: 1.6; }
+.modal-info strong { color: #1e293b; }
+.modal-btns { display: flex; gap: 10px; margin-top: 20px; }
+.btn-close {
+  width: 100%; padding: 10px;
+  background: #f1f5f9; color: #64748b;
+  border: none; border-radius: 8px;
+  cursor: pointer; font-family: inherit; font-size: 14px; font-weight: 700;
+}
+
+/* REQUEST CARD */
+.req-card {
+  background: white; border-radius: 14px; padding: 16px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+  border-left: 4px solid #4a6cf7;
+  display: flex; align-items: center; gap: 14px;
+  transition: transform 0.15s;
+}
+.req-card:hover { transform: translateX(3px); }
+.req-card-img {
+  width: 60px; height: 60px; object-fit: cover;
+  border-radius: 10px; flex-shrink: 0; background: #f0f4ff;
+}
+.req-card-body { flex: 1; }
+.req-card-title { font-size: 14px; font-weight: 700; color: #1e293b; margin-bottom: 3px; }
+.req-card-sub { font-size: 12px; color: #64748b; font-weight: 600; }
+.req-card-status { font-size: 12px; font-weight: 700; margin-top: 4px; }
+.status-waiting  { color: #f59e0b; }
+.status-done     { color: #16a34a; }
+.status-rejected { color: #ef4444; }
+
+/* REQUEST LIST */
+.req-list { display: flex; flex-direction: column; gap: 10px; }
+
+/* MY ITEMS GRID */
+.my-item-card {
+  background: white; border-radius: 16px; overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.my-item-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.11); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🛒 Chợ Đồ Học Sinh</h1>
+  <div class="header-right">
+    <span class="user-name" id="user-name"></span>
+    <button class="btn-logout" onclick="logout()">Đăng xuất</button>
+  </div>
+</div>
+
+<div class="container">
+  <div class="tabs">
+    <button class="tab-btn active" onclick="showTab('market', this)">🏪 Chợ đồ</button>
+    <button class="tab-btn" onclick="showTab('myitems', this)">📦 Đồ của tôi</button>
+    <button class="tab-btn" onclick="showTab('add', this)">➕ Đăng đồ</button>
+    <button class="tab-btn" onclick="showTab('requests', this)">📨 Yêu cầu <span id="badge-req" style="background:#ef4444;color:white;font-size:11px;padding:1px 6px;border-radius:10px;margin-left:4px;display:none"></span></button>
+  </div>
+
+  <!-- CHỢ ĐỒ -->
+  <div class="section active" id="tab-market">
+    <div class="grid" id="market-list">
+      <p class="loading-text">⏳ Đang tải chợ đồ...</p>
+    </div>
+  </div>
+
+  <!-- ĐỒ CỦA TÔI -->
+  <div class="section" id="tab-myitems">
+    <div class="grid" id="myitems-list">
+      <p class="loading-text">⏳ Đang tải...</p>
+    </div>
+  </div>
+
+  <!-- ĐĂNG ĐỒ -->
+  <div class="section" id="tab-add">
+    <div class="form-card">
+      <h3>➕ Đăng đồ vật muốn trao đổi</h3>
+      <div class="form-group">
+        <label>Tên đồ vật ✏️</label>
+        <input id="ten_do" placeholder="VD: Lego, Gấu bông, Bút màu...">
+      </div>
+      <div class="form-group">
+        <label>Mô tả 📝</label>
+        <textarea id="mo_ta" placeholder="Tình trạng, màu sắc, đặc điểm..."></textarea>
+      </div>
+      <div class="form-group">
+        <label>Hình ảnh 📷 (tùy chọn)</label>
+        <input type="file" id="imageInput" accept="image/*">
+        <img id="imagePreview" class="image-preview" alt="Preview">
+      </div>
+      <button class="btn-submit" id="btn-add" onclick="addItem()">🚀 Đăng đồ</button>
+      <p class="msg" id="add-msg"></p>
+    </div>
+  </div>
+
+  <!-- YÊU CẦU -->
+  <div class="section" id="tab-requests">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;" id="req-grid">
+
+      <!-- YÊU CẦU TÔI ĐÃ GỬI -->
+      <div>
+        <div class="section-title">📤 Yêu cầu tôi đã gửi</div>
+        <div class="req-list" id="sent-list">
+          <p class="loading-text">Đang tải...</p>
+        </div>
+      </div>
+
+      <!-- YÊU CẦU NHẬN ĐƯỢC -->
+      <div>
+        <div class="section-title">📥 Yêu cầu từ bạn khác</div>
+        <div class="req-list" id="received-list">
+          <p class="loading-text">Đang tải...</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- MODAL CHI TIẾT YÊU CẦU -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+  <div class="modal" id="modal">
+    <h3 id="modal-title">Chi tiết yêu cầu đổi</h3>
+    <div id="modal-img-wrap"></div>
+    <div class="modal-info" id="modal-info"></div>
+    <div class="modal-btns" id="modal-btns"></div>
+  </div>
+</div>
+
+<script>
+const API = "https://script.google.com/macros/s/AKfycbxotCkVPuavvf3p-p3D-SYM5ldg4zqO4f3WqzUTaLYXmBXm7bEfm0i4OcDIs8qBMQ7R/exec";
+
+const user = JSON.parse(localStorage.getItem("user") || "{}");
+if (!user || String(user.role || "").toLowerCase().trim() !== "student") {
+  alert("Bạn không có quyền truy cập trang này!");
+  window.location.href = "index.html";
+}
+document.getElementById("user-name").textContent = "👋 " + user.ho_ten;
+
+// Responsive requests grid
+function checkReqGridLayout() {
+  const grid = document.getElementById("req-grid");
+  if (!grid) return;
+  grid.style.gridTemplateColumns = window.innerWidth < 700 ? "1fr" : "1fr 1fr";
+}
+window.addEventListener("resize", checkReqGridLayout);
+checkReqGridLayout();
+
+function showTab(id, el) {
+  document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
+  document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+  document.getElementById("tab-" + id).classList.add("active");
+  if (el) el.classList.add("active");
+
+  if (id === "market")   loadMarket();
+  if (id === "myitems")  loadMyItems();
+  if (id === "requests") { loadSentRequests(); loadReceivedRequests(); }
+}
+
+function logout() {
+  if (confirm("Bạn có chắc muốn đăng xuất?")) {
+    localStorage.removeItem("user");
+    window.location.href = "index.html";
+  }
+}
+
+document.getElementById("imageInput").addEventListener("change", function(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    const img = document.getElementById("imagePreview");
+    img.src = ev.target.result;
+    img.style.display = "block";
+  };
+  reader.readAsDataURL(file);
+});
+
+// ✅ SỬA: thêm redirect: "follow" để fetch hoạt động đúng với Google Apps Script
+function call(body) {
+  return fetch(API, {
+    method: "POST",
+    redirect: "follow",
+    headers: { "Content-Type": "text/plain;charset=utf-8" },
+    body: JSON.stringify(body)
+  }).then(r => r.text()).then(t => JSON.parse(t));
+}
+
+// ✅ SỬA: imgHtml dùng wrapper div để fallback hoạt động chính xác
+function imgHtml(url, alt, h) {
+  const height = h || 180;
+  if (!url) {
+    return `<div class="card-img-placeholder" style="height:${height}px;">📦</div>`;
+  }
+  return `
+    <div style="width:100%;height:${height}px;overflow:hidden;position:relative;">
+      <img
+        src="${url}"
+        alt="${alt || ''}"
+        style="width:100%;height:${height}px;object-fit:cover;display:block;"
+        onerror="this.parentElement.innerHTML='<div class=\\'card-img-placeholder\\' style=\\'height:${height}px;\\'>📦</div>';"
+      >
+    </div>`;
+}
+
+/* ====== CHỢ ĐỒ ====== */
+function loadMarket() {
+  const el = document.getElementById("market-list");
+  el.innerHTML = '<p class="loading-text">⏳ Đang tải chợ đồ...</p>';
+
+  call({ action: "getMarket" }).then(data => {
+    if (!Array.isArray(data) || data.length === 0) {
+      el.innerHTML = '<div class="empty"><div class="empty-icon">🏪</div><div>Chưa có đồ vật nào trong chợ</div></div>';
+      return;
+    }
+    const others = data.filter(item => String(item.user_id) !== String(user.user_id));
+    if (others.length === 0) {
+      el.innerHTML = '<div class="empty"><div class="empty-icon">🏪</div><div>Chưa có đồ của bạn khác trong chợ</div></div>';
+      return;
+    }
+    el.innerHTML = others.map(item => `
+      <div class="card">
+        ${imgHtml(item.hinh_anh, item.ten_do, 180)}
+        <div class="card-body">
+          <div class="card-title">${item.ten_do}</div>
+          <div class="card-owner">👤 ${item.ho_ten}</div>
+          <div class="card-desc">${item.mo_ta || "Không có mô tả"}</div>
+          <button class="btn-exchange" onclick="exchange('${item.id}','${item.user_id}')">🔄 Yêu cầu đổi</button>
+        </div>
+      </div>
+    `).join("");
+  }).catch(() => el.innerHTML = '<div class="empty">❌ Lỗi tải dữ liệu</div>');
+}
+
+/* ====== ĐỒ CỦA TÔI ====== */
+function loadMyItems() {
+  const el = document.getElementById("myitems-list");
+  el.innerHTML = '<p class="loading-text">⏳ Đang tải...</p>';
+
+  call({ action: "getMyItems", user_id: user.user_id }).then(data => {
+    if (!Array.isArray(data) || data.length === 0) {
+      el.innerHTML = '<div class="empty"><div class="empty-icon">📦</div><div>Bạn chưa đăng đồ vật nào</div></div>';
+      return;
+    }
+    el.innerHTML = data.map(item => {
+      const badgeMap = {
+        pending:  '<span class="badge badge-pending">⏳ Chờ duyệt</span>',
+        approved: '<span class="badge badge-approved">✅ Đã duyệt</span>',
+        rejected: '<span class="badge badge-rejected">❌ Từ chối</span>'
+      };
+      const badge = badgeMap[item.trang_thai] || "";
+      return `
+        <div class="my-item-card">
+          ${imgHtml(item.hinh_anh, item.ten_do, 160)}
+          <div class="card-body">
+            ${badge}
+            <div class="card-title">${item.ten_do}</div>
+            <div class="card-desc">${item.mo_ta || "Không có mô tả"}</div>
+          </div>
+        </div>
+      `;
+    }).join("");
+  }).catch(() => el.innerHTML = '<div class="empty">❌ Lỗi tải dữ liệu</div>');
+}
+
+/* ====== ĐĂNG ĐỒ ====== */
+function addItem() {
+  const ten_do = document.getElementById("ten_do").value.trim();
+  const mo_ta  = document.getElementById("mo_ta").value.trim();
+  const btn    = document.getElementById("btn-add");
+  const msg    = document.getElementById("add-msg");
+
+  if (!ten_do) {
+    msg.textContent = "⚠️ Vui lòng nhập tên đồ vật!";
+    msg.className = "msg err";
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = "⏳ Đang gửi...";
+  msg.textContent = "";
+
+  const fileInput = document.getElementById("imageInput");
+  let image_base64 = "";
+
+  function sendToServer() {
+    call({ action: "addItem", user_id: user.user_id, ten_do, mo_ta, image_base64 })
+      .then(data => {
+        if (data.status === "success") {
+          msg.textContent = "✅ Đã đăng! Chờ giáo viên duyệt nhé.";
+          msg.className = "msg ok";
+          document.getElementById("ten_do").value = "";
+          document.getElementById("mo_ta").value = "";
+          document.getElementById("imageInput").value = "";
+          document.getElementById("imagePreview").style.display = "none";
+        } else {
+          msg.textContent = "❌ " + (data.message || "Lỗi không xác định");
+          msg.className = "msg err";
+        }
+      })
+      .catch(() => { msg.textContent = "❌ Không kết nối được server!"; msg.className = "msg err"; })
+      .finally(() => { btn.disabled = false; btn.textContent = "🚀 Đăng đồ"; });
+  }
+
+  if (fileInput.files[0]) {
+    const reader = new FileReader();
+    reader.onload = e => { image_base64 = e.target.result; sendToServer(); };
+    reader.readAsDataURL(fileInput.files[0]);
+  } else {
+    sendToServer();
+  }
+}
+
+/* ====== YÊU CẦU ĐÃ GỬI ====== */
+function loadSentRequests() {
+  const el = document.getElementById("sent-list");
+  el.innerHTML = '<p class="loading-text">Đang tải...</p>';
+
+  call({ action: "getMyRequests", user_id: user.user_id }).then(data => {
+    if (!Array.isArray(data) || data.length === 0) {
+      el.innerHTML = '<div class="empty" style="padding:30px 0;"><div class="empty-icon">📤</div><div>Chưa gửi yêu cầu nào</div></div>';
+      return;
+    }
+    el.innerHTML = data.map(req => {
+      const statusHtml = {
+        pending:  '<span class="req-card-status status-waiting">⏳ Đang chờ</span>',
+        approved: '<span class="req-card-status status-done">✅ Đã chấp nhận</span>',
+        rejected: '<span class="req-card-status status-rejected">❌ Bị từ chối</span>'
+      }[req.trang_thai] || '';
+      return `
+        <div class="req-card">
+          ${req.hinh_anh
+            ? `<img class="req-card-img" src="${req.hinh_anh}"
+                onerror="this.outerHTML='<div class=\\'req-card-img\\' style=\\'display:flex;align-items:center;justify-content:center;font-size:24px;\\'>📦</div>';">`
+            : `<div class="req-card-img" style="display:flex;align-items:center;justify-content:center;font-size:24px;">📦</div>`}
+          <div class="req-card-body">
+            <div class="req-card-title">${req.ten_do}</div>
+            <div class="req-card-sub">👤 ${req.to_name}</div>
+            ${statusHtml}
+          </div>
+        </div>`;
+    }).join("");
+  }).catch(() => el.innerHTML = '<div class="empty">❌ Lỗi tải dữ liệu</div>');
+}
+
+/* ====== YÊU CẦU NHẬN ĐƯỢC ====== */
+function loadReceivedRequests() {
+  const el = document.getElementById("received-list");
+  el.innerHTML = '<p class="loading-text">Đang tải...</p>';
+
+  call({ action: "getReceivedRequests", user_id: user.user_id }).then(data => {
+    const badge = document.getElementById("badge-req");
+    if (!Array.isArray(data) || data.length === 0) {
+      el.innerHTML = '<div class="empty" style="padding:30px 0;"><div class="empty-icon">📥</div><div>Chưa có yêu cầu nào</div></div>';
+      badge.style.display = "none";
+      return;
+    }
+    badge.textContent = data.length;
+    badge.style.display = "inline";
+
+    el.innerHTML = data.map(req => `
+      <div class="req-card" style="cursor:pointer;border-left-color:#f59e0b;" onclick="openModal(${JSON.stringify(req).replace(/"/g,'&quot;')})">
+        ${req.hinh_anh
+          ? `<img class="req-card-img" src="${req.hinh_anh}"
+              onerror="this.outerHTML='<div class=\\'req-card-img\\' style=\\'display:flex;align-items:center;justify-content:center;font-size:24px;\\'>📦</div>';">`
+          : `<div class="req-card-img" style="display:flex;align-items:center;justify-content:center;font-size:24px;">📦</div>`}
+        <div class="req-card-body">
+          <div class="req-card-title">${req.ten_do}</div>
+          <div class="req-card-sub">👤 ${req.from_name}</div>
+          <span class="req-card-status status-waiting">⏳ Chờ xử lý — Nhấn để xem</span>
+        </div>
+      </div>`).join("");
+  }).catch(() => el.innerHTML = '<div class="empty">❌ Lỗi tải dữ liệu</div>');
+}
+
+/* ====== MODAL CHI TIẾT ====== */
+function openModal(req) {
+  document.getElementById("modal-title").textContent = `Yêu cầu từ ${req.from_name}`;
+  document.getElementById("modal-img-wrap").innerHTML = req.hinh_anh
+    ? `<img src="${req.hinh_anh}"
+        style="width:100%;height:200px;object-fit:cover;border-radius:10px;margin-bottom:14px;"
+        onerror="this.outerHTML='<div class=\\'modal-img-placeholder\\'>📦</div>';">`
+    : `<div class="modal-img-placeholder">📦</div>`;
+  document.getElementById("modal-info").innerHTML = `
+    <p><strong>Đồ muốn đổi:</strong> ${req.ten_do}</p>
+    <p><strong>Mô tả:</strong> ${req.mo_ta || "Không có mô tả"}</p>
+    <p><strong>Từ bạn:</strong> ${req.from_name}</p>
+  `;
+  document.getElementById("modal-btns").innerHTML = `
+    <button class="btn-green" style="flex:1;padding:12px;" onclick="handleExchange('accept','${req.id}')">✅ Chấp nhận</button>
+    <button class="btn-red"   style="flex:1;padding:12px;" onclick="handleExchange('reject','${req.id}')">❌ Từ chối</button>
+    <button class="btn-close" style="flex:0.6;padding:12px;" onclick="closeModal()">Đóng</button>
+  `;
+  document.getElementById("modal-overlay").classList.add("show");
+}
+
+function closeModal(e) {
+  if (!e || e.target === document.getElementById("modal-overlay")) {
+    document.getElementById("modal-overlay").classList.remove("show");
+  }
+}
+
+function handleExchange(action, id) {
+  const apiAction = action === "accept" ? "acceptExchange" : "rejectExchange";
+  call({ action: apiAction, id })
+    .then(data => {
+      document.getElementById("modal-overlay").classList.remove("show");
+      if (data.status === "approved") alert("✅ Đã chấp nhận trao đổi!");
+      else if (data.status === "rejected") alert("❌ Đã từ chối yêu cầu.");
+      else alert("Đã xử lý.");
+      loadReceivedRequests();
+      loadSentRequests();
+    })
+    .catch(() => alert("❌ Lỗi kết nối!"));
+}
+
+/* ====== YÊU CẦU ĐỔI ====== */
+function exchange(item_id, to_user) {
+  if (String(to_user) === String(user.user_id)) return alert("Đây là đồ của bạn!");
+  if (!confirm("Gửi yêu cầu trao đổi món đồ này?")) return;
+
+  call({ action: "requestExchange", item_id, from_user: user.user_id, to_user })
+    .then(() => alert("✅ Đã gửi yêu cầu trao đổi! Chờ bạn kia phản hồi nhé."))
+    .catch(() => alert("❌ Lỗi gửi yêu cầu!"));
+}
+
+// Khởi động
+loadMarket();
+</script>
+</body>
+</html>
