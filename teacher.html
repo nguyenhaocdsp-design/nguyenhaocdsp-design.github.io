@@ -224,7 +224,8 @@ body { font-family: 'Nunito', Arial, sans-serif; background: #f0faf8; min-height
             <th>#</th>
             <th>Học sinh gửi</th>
             <th>Học sinh nhận</th>
-            <th>Đồ vật</th>
+            <th>Món đồ nhận được</th>
+            <th>Đổi bằng</th>
             <th>Thời gian</th>
           </tr>
         </thead>
@@ -238,7 +239,7 @@ body { font-family: 'Nunito', Arial, sans-serif; background: #f0faf8; min-height
 </div>
 
 <script>
-const API = "https://script.google.com/macros/s/AKfycbxcWI_Wl_a-u6AHA8LjTuDDRpr5y2e4MuWELPvSvtbNDlIZAJ2GVFyCAsMTIumkKgZd/exec";
+const API = "https://script.google.com/macros/s/AKfycbxB4cC9Mk1KJ1k6tXuyIfXRWMIPEa0Q7vm65VCbfG-mAz1_9Zjktp7hDDnKYKQsNL7X/exec";
 
 const user = JSON.parse(localStorage.getItem("user") || "{}");
 if (!user || String(user.role || "").toLowerCase().trim() !== "teacher") {
@@ -382,6 +383,7 @@ function loadTransactions() {
         <td><strong>${t.user1}</strong></td>
         <td><strong>${t.user2}</strong></td>
         <td>${t.ten_do}</td>
+        <td style="color:#4a6cf7;font-weight:600;">${t.offer_ten_do || "—"}</td>
         <td style="font-size:12px;color:#94a3b8;">${t.thoi_gian}</td>
       </tr>
     `).join("");

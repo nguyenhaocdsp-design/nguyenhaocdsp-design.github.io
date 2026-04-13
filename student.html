@@ -12,11 +12,8 @@ body { font-family: 'Nunito', Arial, sans-serif; background: #f0f4ff; min-height
 /* HEADER */
 .header {
   background: linear-gradient(135deg, #4a6cf7, #6a3de8);
-  color: white;
-  padding: 14px 24px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  color: white; padding: 14px 24px;
+  display: flex; justify-content: space-between; align-items: center;
   box-shadow: 0 4px 16px rgba(74,108,247,0.35);
   position: sticky; top: 0; z-index: 100;
 }
@@ -24,16 +21,9 @@ body { font-family: 'Nunito', Arial, sans-serif; background: #f0f4ff; min-height
 .header-right { display: flex; align-items: center; gap: 12px; }
 .user-name { font-size: 14px; opacity: 0.92; font-weight: 600; }
 .btn-logout {
-  background: rgba(255,255,255,0.18);
-  border: 1.5px solid rgba(255,255,255,0.4);
-  color: white;
-  padding: 6px 14px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 13px;
-  font-family: inherit;
-  font-weight: 600;
-  transition: background 0.2s;
+  background: rgba(255,255,255,0.18); border: 1.5px solid rgba(255,255,255,0.4);
+  color: white; padding: 6px 14px; border-radius: 8px; cursor: pointer;
+  font-size: 13px; font-family: inherit; font-weight: 600; transition: background 0.2s;
 }
 .btn-logout:hover { background: rgba(255,255,255,0.3); }
 
@@ -42,26 +32,14 @@ body { font-family: 'Nunito', Arial, sans-serif; background: #f0f4ff; min-height
 
 /* TABS */
 .tabs {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 24px;
-  flex-wrap: wrap;
-  background: white;
-  padding: 8px;
-  border-radius: 14px;
+  display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap;
+  background: white; padding: 8px; border-radius: 14px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.06);
 }
 .tab-btn {
-  padding: 10px 20px;
-  border-radius: 9px;
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  font-size: 14px;
-  font-family: inherit;
-  color: #64748b;
-  font-weight: 600;
-  transition: all 0.2s;
+  padding: 10px 20px; border-radius: 9px; border: none;
+  background: transparent; cursor: pointer;
+  font-size: 14px; font-family: inherit; color: #64748b; font-weight: 600; transition: all 0.2s;
 }
 .tab-btn.active { background: #4a6cf7; color: white; box-shadow: 0 4px 12px rgba(74,108,247,0.35); }
 .tab-btn:hover:not(.active) { background: #f1f5f9; color: #1e293b; }
@@ -75,20 +53,12 @@ body { font-family: 'Nunito', Arial, sans-serif; background: #f0f4ff; min-height
 
 /* CARD */
 .card {
-  background: white;
-  border-radius: 16px;
-  padding: 0;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
-  overflow: hidden;
+  background: white; border-radius: 16px; padding: 0;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07); overflow: hidden;
   transition: transform 0.2s, box-shadow 0.2s;
 }
 .card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.11); }
-.card-img {
-  width: 100%;
-  height: 180px;
-  object-fit: cover;
-  display: block;
-}
+.card-img { width: 100%; height: 180px; object-fit: cover; display: block; }
 .card-img-placeholder {
   width: 100%; height: 180px;
   background: linear-gradient(135deg, #e8eeff, #f0f4ff);
@@ -102,40 +72,23 @@ body { font-family: 'Nunito', Arial, sans-serif; background: #f0f4ff; min-height
 
 /* BUTTONS */
 .btn-exchange {
-  width: 100%;
-  padding: 10px;
-  background: #eff6ff;
-  color: #3b82f6;
-  border: 1.5px solid #bfdbfe;
-  border-radius: 9px;
-  cursor: pointer;
-  font-size: 13px;
-  font-family: inherit;
-  font-weight: 700;
-  transition: all 0.2s;
+  width: 100%; padding: 10px; background: #eff6ff; color: #3b82f6;
+  border: 1.5px solid #bfdbfe; border-radius: 9px; cursor: pointer;
+  font-size: 13px; font-family: inherit; font-weight: 700; transition: all 0.2s;
 }
 .btn-exchange:hover { background: #3b82f6; color: white; border-color: #3b82f6; }
-
 .btn-green {
-  flex: 1; padding: 9px;
-  background: #f0fdf4; color: #16a34a;
-  border: 1.5px solid #bbf7d0;
-  border-radius: 8px; cursor: pointer;
-  font-family: inherit; font-size: 13px; font-weight: 700;
-  transition: all 0.2s;
+  flex: 1; padding: 9px; background: #f0fdf4; color: #16a34a;
+  border: 1.5px solid #bbf7d0; border-radius: 8px; cursor: pointer;
+  font-family: inherit; font-size: 13px; font-weight: 700; transition: all 0.2s;
 }
 .btn-green:hover { background: #16a34a; color: white; }
-
 .btn-red {
-  flex: 1; padding: 9px;
-  background: #fef2f2; color: #dc2626;
-  border: 1.5px solid #fecaca;
-  border-radius: 8px; cursor: pointer;
-  font-family: inherit; font-size: 13px; font-weight: 700;
-  transition: all 0.2s;
+  flex: 1; padding: 9px; background: #fef2f2; color: #dc2626;
+  border: 1.5px solid #fecaca; border-radius: 8px; cursor: pointer;
+  font-family: inherit; font-size: 13px; font-weight: 700; transition: all 0.2s;
 }
 .btn-red:hover { background: #dc2626; color: white; }
-
 .btn-row { display: flex; gap: 8px; }
 
 /* STATUS BADGES */
@@ -143,52 +96,38 @@ body { font-family: 'Nunito', Arial, sans-serif; background: #f0f4ff; min-height
   display: inline-block; font-size: 11px; font-weight: 700;
   padding: 3px 10px; border-radius: 20px; margin-bottom: 8px;
 }
-.badge-pending  { background: #fef3c7; color: #b45309; }
-.badge-approved { background: #dcfce7; color: #166534; }
-.badge-rejected { background: #fee2e2; color: #991b1b; }
+.badge-pending   { background: #fef3c7; color: #b45309; }
+.badge-approved  { background: #dcfce7; color: #166534; }
+.badge-rejected  { background: #fee2e2; color: #991b1b; }
 .badge-exchanged { background: #dbeafe; color: #1d4ed8; }
 
 /* FORM */
 .form-card {
-  background: white;
-  border-radius: 16px;
-  padding: 28px;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
-  max-width: 540px;
+  background: white; border-radius: 16px; padding: 28px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07); max-width: 540px;
 }
 .form-card h3 { font-size: 17px; color: #1e293b; margin-bottom: 20px; font-weight: 800; }
 .form-group { margin-bottom: 16px; }
 .form-group label { display: block; font-size: 13px; color: #475569; margin-bottom: 7px; font-weight: 700; }
 .form-group input, .form-group textarea {
-  width: 100%;
-  padding: 11px 14px;
-  border-radius: 10px;
-  border: 1.5px solid #e2e8f0;
-  font-size: 14px;
-  font-family: inherit;
-  transition: border 0.2s;
-  color: #1e293b;
+  width: 100%; padding: 11px 14px; border-radius: 10px;
+  border: 1.5px solid #e2e8f0; font-size: 14px; font-family: inherit;
+  transition: border 0.2s; color: #1e293b;
 }
 .form-group input:focus, .form-group textarea:focus {
-  outline: none; border-color: #4a6cf7;
-  box-shadow: 0 0 0 3px rgba(74,108,247,0.12);
+  outline: none; border-color: #4a6cf7; box-shadow: 0 0 0 3px rgba(74,108,247,0.12);
 }
 .form-group textarea { resize: vertical; min-height: 90px; }
 .image-preview {
   width: 100%; max-height: 220px; object-fit: contain;
-  border: 2px dashed #c7d2fe;
-  border-radius: 12px; margin-top: 10px; display: none;
+  border: 2px dashed #c7d2fe; border-radius: 12px; margin-top: 10px; display: none;
   background: #f0f4ff;
 }
 .btn-submit {
   background: linear-gradient(135deg, #4a6cf7, #6a3de8);
-  color: white; border: none;
-  padding: 13px 28px;
-  border-radius: 10px; cursor: pointer;
-  font-size: 15px; font-family: inherit; font-weight: 700;
-  width: 100%;
-  box-shadow: 0 4px 14px rgba(74,108,247,0.35);
-  transition: opacity 0.2s;
+  color: white; border: none; padding: 13px 28px; border-radius: 10px; cursor: pointer;
+  font-size: 15px; font-family: inherit; font-weight: 700; width: 100%;
+  box-shadow: 0 4px 14px rgba(74,108,247,0.35); transition: opacity 0.2s;
 }
 .btn-submit:hover { opacity: 0.9; }
 .btn-submit:disabled { background: #a5b4fc; box-shadow: none; cursor: not-allowed; }
@@ -199,8 +138,7 @@ body { font-family: 'Nunito', Arial, sans-serif; background: #f0f4ff; min-height
 /* SECTION HEADER */
 .section-title {
   font-size: 16px; font-weight: 800; color: #1e293b;
-  margin-bottom: 16px; padding-bottom: 10px;
-  border-bottom: 2px solid #e8eeff;
+  margin-bottom: 16px; padding-bottom: 10px; border-bottom: 2px solid #e8eeff;
 }
 
 /* EMPTY / LOADING */
@@ -208,19 +146,17 @@ body { font-family: 'Nunito', Arial, sans-serif; background: #f0f4ff; min-height
 .empty .empty-icon { font-size: 40px; margin-bottom: 10px; }
 .loading-text { text-align: center; padding: 40px; color: #94a3b8; font-size: 14px; }
 
-/* MODAL */
+/* MODAL CHUNG */
 .modal-overlay {
   display: none; position: fixed; inset: 0;
   background: rgba(0,0,0,0.5); z-index: 1000;
-  align-items: center; justify-content: center;
-  padding: 16px;
+  align-items: center; justify-content: center; padding: 16px;
 }
 .modal-overlay.show { display: flex; }
 .modal {
-  background: white; border-radius: 18px;
-  padding: 28px; max-width: 420px; width: 100%;
-  box-shadow: 0 24px 60px rgba(0,0,0,0.2);
-  animation: popIn 0.25s ease;
+  background: white; border-radius: 18px; padding: 28px;
+  max-width: 420px; width: 100%;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.2); animation: popIn 0.25s ease;
 }
 @keyframes popIn {
   from { transform: scale(0.9); opacity: 0; }
@@ -239,29 +175,57 @@ body { font-family: 'Nunito', Arial, sans-serif; background: #f0f4ff; min-height
 .modal-info strong { color: #1e293b; }
 .modal-btns { display: flex; gap: 10px; margin-top: 20px; }
 .btn-close {
-  width: 100%; padding: 10px;
-  background: #f1f5f9; color: #64748b;
-  border: none; border-radius: 8px;
-  cursor: pointer; font-family: inherit; font-size: 14px; font-weight: 700;
+  width: 100%; padding: 10px; background: #f1f5f9; color: #64748b;
+  border: none; border-radius: 8px; cursor: pointer; font-family: inherit; font-size: 14px; font-weight: 700;
 }
+
+/* MODAL CHỌN ĐỒ ĐỂ ĐỔI */
+.offer-modal { max-width: 500px; }
+.offer-item-list {
+  display: flex; flex-direction: column; gap: 10px;
+  max-height: 320px; overflow-y: auto; margin: 14px 0;
+  padding-right: 4px;
+}
+.offer-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 14px; border-radius: 12px; border: 2px solid #e2e8f0;
+  cursor: pointer; transition: all 0.18s; background: white;
+}
+.offer-item:hover { border-color: #4a6cf7; background: #f0f4ff; }
+.offer-item.selected { border-color: #4a6cf7; background: #eef2ff; }
+.offer-item img, .offer-item-thumb-placeholder {
+  width: 52px; height: 52px; border-radius: 8px; object-fit: cover; flex-shrink: 0;
+}
+.offer-item-thumb-placeholder {
+  background: linear-gradient(135deg, #e8eeff, #f0f4ff);
+  display: flex; align-items: center; justify-content: center; font-size: 22px;
+}
+.offer-item-info { flex: 1; min-width: 0; }
+.offer-item-name { font-size: 14px; font-weight: 700; color: #1e293b; }
+.offer-item-desc { font-size: 12px; color: #94a3b8; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.offer-item-check {
+  width: 22px; height: 22px; border-radius: 50%; border: 2px solid #cbd5e1;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  font-size: 12px; color: transparent; transition: all 0.18s;
+}
+.offer-item.selected .offer-item-check { background: #4a6cf7; border-color: #4a6cf7; color: white; }
 
 /* REQUEST CARD */
 .req-card {
   background: white; border-radius: 14px; padding: 16px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.07);
-  border-left: 4px solid #4a6cf7;
-  display: flex; align-items: center; gap: 14px;
-  transition: transform 0.15s;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.07); border-left: 4px solid #4a6cf7;
+  display: flex; align-items: center; gap: 14px; transition: transform 0.15s;
 }
 .req-card:hover { transform: translateX(3px); }
 .req-card-img {
   width: 60px; height: 60px; object-fit: cover;
   border-radius: 10px; flex-shrink: 0; background: #f0f4ff;
 }
-.req-card-body { flex: 1; }
+.req-card-body { flex: 1; min-width: 0; }
 .req-card-title { font-size: 14px; font-weight: 700; color: #1e293b; margin-bottom: 3px; }
-.req-card-sub { font-size: 12px; color: #64748b; font-weight: 600; }
-.req-card-status { font-size: 12px; font-weight: 700; margin-top: 4px; }
+.req-card-sub   { font-size: 12px; color: #64748b; font-weight: 600; }
+.req-card-offer { font-size: 12px; color: #4a6cf7; font-weight: 600; margin-top: 2px; }
+.req-card-status { font-size: 12px; font-weight: 700; margin-top: 4px; display: block; }
 .status-waiting  { color: #f59e0b; }
 .status-done     { color: #16a34a; }
 .status-rejected { color: #ef4444; }
@@ -272,8 +236,7 @@ body { font-family: 'Nunito', Arial, sans-serif; background: #f0f4ff; min-height
 /* MY ITEMS GRID */
 .my-item-card {
   background: white; border-radius: 16px; overflow: hidden;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
-  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07); transition: transform 0.2s, box-shadow 0.2s;
 }
 .my-item-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.11); }
 </style>
@@ -293,7 +256,9 @@ body { font-family: 'Nunito', Arial, sans-serif; background: #f0f4ff; min-height
     <button class="tab-btn active" onclick="showTab('market', this)">🏪 Chợ đồ</button>
     <button class="tab-btn" onclick="showTab('myitems', this)">📦 Đồ của tôi</button>
     <button class="tab-btn" onclick="showTab('add', this)">➕ Đăng đồ</button>
-    <button class="tab-btn" onclick="showTab('requests', this)">📨 Yêu cầu <span id="badge-req" style="background:#ef4444;color:white;font-size:11px;padding:1px 6px;border-radius:10px;margin-left:4px;display:none"></span></button>
+    <button class="tab-btn" onclick="showTab('requests', this)">📨 Yêu cầu
+      <span id="badge-req" style="background:#ef4444;color:white;font-size:11px;padding:1px 6px;border-radius:10px;margin-left:4px;display:none"></span>
+    </button>
   </div>
 
   <!-- CHỢ ĐỒ -->
@@ -335,30 +300,21 @@ body { font-family: 'Nunito', Arial, sans-serif; background: #f0f4ff; min-height
   <!-- YÊU CẦU -->
   <div class="section" id="tab-requests">
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;" id="req-grid">
-
-      <!-- YÊU CẦU TÔI ĐÃ GỬI -->
       <div>
         <div class="section-title">📤 Yêu cầu tôi đã gửi</div>
-        <div class="req-list" id="sent-list">
-          <p class="loading-text">Đang tải...</p>
-        </div>
+        <div class="req-list" id="sent-list"><p class="loading-text">Đang tải...</p></div>
       </div>
-
-      <!-- YÊU CẦU NHẬN ĐƯỢC -->
       <div>
         <div class="section-title">📥 Yêu cầu từ bạn khác</div>
-        <div class="req-list" id="received-list">
-          <p class="loading-text">Đang tải...</p>
-        </div>
+        <div class="req-list" id="received-list"><p class="loading-text">Đang tải...</p></div>
       </div>
-
     </div>
   </div>
 </div>
 
-<!-- MODAL CHI TIẾT YÊU CẦU -->
+<!-- MODAL CHI TIẾT YÊU CẦU NHẬN ĐƯỢC -->
 <div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
-  <div class="modal" id="modal">
+  <div class="modal">
     <h3 id="modal-title">Chi tiết yêu cầu đổi</h3>
     <div id="modal-img-wrap"></div>
     <div class="modal-info" id="modal-info"></div>
@@ -366,8 +322,24 @@ body { font-family: 'Nunito', Arial, sans-serif; background: #f0f4ff; min-height
   </div>
 </div>
 
+<!-- MODAL CHỌN ĐỒ CỦA MÌNH ĐỂ ĐỔI -->
+<div class="modal-overlay" id="offer-overlay" onclick="closeOfferModal(event)">
+  <div class="modal offer-modal">
+    <h3>🔄 Chọn món đồ để đề xuất đổi</h3>
+    <p style="font-size:13px;color:#64748b;">Bạn muốn đổi lấy: <strong id="offer-target-name" style="color:#1e293b;"></strong></p>
+    <div class="offer-item-list" id="offer-item-list">
+      <p class="loading-text">⏳ Đang tải...</p>
+    </div>
+    <div id="offer-msg" style="font-size:13px;color:#ef4444;min-height:18px;margin-bottom:8px;font-weight:600;"></div>
+    <div class="modal-btns">
+      <button class="btn-green" style="flex:1;padding:12px;" onclick="confirmExchange()">✅ Gửi yêu cầu đổi</button>
+      <button class="btn-close" style="flex:0.6;padding:12px;" onclick="closeOfferModal()">Hủy</button>
+    </div>
+  </div>
+</div>
+
 <script>
-const API = "https://script.google.com/macros/s/AKfycbxcWI_Wl_a-u6AHA8LjTuDDRpr5y2e4MuWELPvSvtbNDlIZAJ2GVFyCAsMTIumkKgZd/exec";
+const API = "https://script.google.com/macros/s/AKfycbxB4cC9Mk1KJ1k6tXuyIfXRWMIPEa0Q7vm65VCbfG-mAz1_9Zjktp7hDDnKYKQsNL7X/exec";
 
 const user = JSON.parse(localStorage.getItem("user") || "{}");
 if (!user || String(user.role || "").toLowerCase().trim() !== "student") {
@@ -376,7 +348,13 @@ if (!user || String(user.role || "").toLowerCase().trim() !== "student") {
 }
 document.getElementById("user-name").textContent = "👋 " + user.ho_ten;
 
-// Responsive requests grid
+// ---- State modal chọn đồ ----
+let _offerTargetItemId = null;
+let _offerTargetName   = null;
+let _offerToUser       = null;
+let _selectedOfferItem = null;
+
+// ---- Layout responsive ----
 function checkReqGridLayout() {
   const grid = document.getElementById("req-grid");
   if (!grid) return;
@@ -390,7 +368,6 @@ function showTab(id, el) {
   document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
   document.getElementById("tab-" + id).classList.add("active");
   if (el) el.classList.add("active");
-
   if (id === "market")   loadMarket();
   if (id === "myitems")  loadMyItems();
   if (id === "requests") { loadSentRequests(); loadReceivedRequests(); }
@@ -409,44 +386,32 @@ document.getElementById("imageInput").addEventListener("change", function(e) {
   const reader = new FileReader();
   reader.onload = ev => {
     const img = document.getElementById("imagePreview");
-    img.src = ev.target.result;
-    img.style.display = "block";
+    img.src = ev.target.result; img.style.display = "block";
   };
   reader.readAsDataURL(file);
 });
 
-// ✅ SỬA: thêm redirect: "follow" để fetch hoạt động đúng với Google Apps Script
 function call(body) {
   return fetch(API, {
-    method: "POST",
-    redirect: "follow",
+    method: "POST", redirect: "follow",
     headers: { "Content-Type": "text/plain;charset=utf-8" },
     body: JSON.stringify(body)
   }).then(r => r.text()).then(t => JSON.parse(t));
 }
 
-// ✅ SỬA: imgHtml dùng wrapper div để fallback hoạt động chính xác
 function imgHtml(url, alt, h) {
   const height = h || 180;
-  if (!url) {
-    return `<div class="card-img-placeholder" style="height:${height}px;">📦</div>`;
-  }
-  return `
-    <div style="width:100%;height:${height}px;overflow:hidden;position:relative;">
-      <img
-        src="${url}"
-        alt="${alt || ''}"
-        style="width:100%;height:${height}px;object-fit:cover;display:block;"
-        onerror="this.parentElement.innerHTML='<div class=\\'card-img-placeholder\\' style=\\'height:${height}px;\\'>📦</div>';"
-      >
-    </div>`;
+  if (!url) return `<div class="card-img-placeholder" style="height:${height}px;">📦</div>`;
+  return `<div style="width:100%;height:${height}px;overflow:hidden;">
+    <img src="${url}" alt="${alt||''}" style="width:100%;height:${height}px;object-fit:cover;display:block;"
+      onerror="this.parentElement.innerHTML='<div class=\\'card-img-placeholder\\' style=\\'height:${height}px;\\'>📦</div>';">
+  </div>`;
 }
 
 /* ====== CHỢ ĐỒ ====== */
 function loadMarket() {
   const el = document.getElementById("market-list");
   el.innerHTML = '<p class="loading-text">⏳ Đang tải chợ đồ...</p>';
-
   call({ action: "getMarket" }).then(data => {
     if (!Array.isArray(data) || data.length === 0) {
       el.innerHTML = '<div class="empty"><div class="empty-icon">🏪</div><div>Chưa có đồ vật nào trong chợ</div></div>';
@@ -464,10 +429,11 @@ function loadMarket() {
           <div class="card-title">${item.ten_do}</div>
           <div class="card-owner">👤 ${item.ho_ten}</div>
           <div class="card-desc">${item.mo_ta || "Không có mô tả"}</div>
-          <button class="btn-exchange" onclick="exchange('${item.id}','${item.user_id}')">🔄 Yêu cầu đổi</button>
+          <button class="btn-exchange" onclick="openOfferModal('${item.id}','${item.user_id}',${JSON.stringify(item.ten_do).replace(/"/g,'&quot;')})">
+            🔄 Yêu cầu đổi
+          </button>
         </div>
-      </div>
-    `).join("");
+      </div>`).join("");
   }).catch(() => el.innerHTML = '<div class="empty">❌ Lỗi tải dữ liệu</div>');
 }
 
@@ -475,7 +441,6 @@ function loadMarket() {
 function loadMyItems() {
   const el = document.getElementById("myitems-list");
   el.innerHTML = '<p class="loading-text">⏳ Đang tải...</p>';
-
   call({ action: "getMyItems", user_id: user.user_id }).then(data => {
     if (!Array.isArray(data) || data.length === 0) {
       el.innerHTML = '<div class="empty"><div class="empty-icon">📦</div><div>Bạn chưa đăng đồ vật nào</div></div>';
@@ -483,22 +448,20 @@ function loadMyItems() {
     }
     el.innerHTML = data.map(item => {
       const badgeMap = {
-        pending:    '<span class="badge badge-pending">⏳ Chờ duyệt</span>',
-        approved:   '<span class="badge badge-approved">✅ Đã duyệt</span>',
-        rejected:   '<span class="badge badge-rejected">❌ Từ chối</span>',
-        exchanged:  '<span class="badge badge-exchanged">🔄 Đã trao đổi</span>'
+        pending:   '<span class="badge badge-pending">⏳ Chờ duyệt</span>',
+        approved:  '<span class="badge badge-approved">✅ Đã duyệt</span>',
+        rejected:  '<span class="badge badge-rejected">❌ Từ chối</span>',
+        exchanged: '<span class="badge badge-exchanged">🔄 Đã trao đổi</span>'
       };
-      const badge = badgeMap[item.trang_thai] || "";
       return `
         <div class="my-item-card">
           ${imgHtml(item.hinh_anh, item.ten_do, 160)}
           <div class="card-body">
-            ${badge}
+            ${badgeMap[item.trang_thai] || ""}
             <div class="card-title">${item.ten_do}</div>
             <div class="card-desc">${item.mo_ta || "Không có mô tả"}</div>
           </div>
-        </div>
-      `;
+        </div>`;
     }).join("");
   }).catch(() => el.innerHTML = '<div class="empty">❌ Lỗi tải dữ liệu</div>');
 }
@@ -509,53 +472,111 @@ function addItem() {
   const mo_ta  = document.getElementById("mo_ta").value.trim();
   const btn    = document.getElementById("btn-add");
   const msg    = document.getElementById("add-msg");
-
-  if (!ten_do) {
-    msg.textContent = "⚠️ Vui lòng nhập tên đồ vật!";
-    msg.className = "msg err";
-    return;
-  }
-
-  btn.disabled = true;
-  btn.textContent = "⏳ Đang gửi...";
-  msg.textContent = "";
-
+  if (!ten_do) { msg.textContent = "⚠️ Vui lòng nhập tên đồ vật!"; msg.className = "msg err"; return; }
+  btn.disabled = true; btn.textContent = "⏳ Đang gửi..."; msg.textContent = "";
   const fileInput = document.getElementById("imageInput");
   let image_base64 = "";
-
   function sendToServer() {
     call({ action: "addItem", user_id: user.user_id, ten_do, mo_ta, image_base64 })
       .then(data => {
         if (data.status === "success") {
-          msg.textContent = "✅ Đã đăng! Chờ giáo viên duyệt nhé.";
-          msg.className = "msg ok";
+          msg.textContent = "✅ Đã đăng! Chờ giáo viên duyệt nhé."; msg.className = "msg ok";
           document.getElementById("ten_do").value = "";
           document.getElementById("mo_ta").value = "";
           document.getElementById("imageInput").value = "";
           document.getElementById("imagePreview").style.display = "none";
-        } else {
-          msg.textContent = "❌ " + (data.message || "Lỗi không xác định");
-          msg.className = "msg err";
-        }
+        } else { msg.textContent = "❌ " + (data.message || "Lỗi không xác định"); msg.className = "msg err"; }
       })
       .catch(() => { msg.textContent = "❌ Không kết nối được server!"; msg.className = "msg err"; })
       .finally(() => { btn.disabled = false; btn.textContent = "🚀 Đăng đồ"; });
   }
-
   if (fileInput.files[0]) {
     const reader = new FileReader();
     reader.onload = e => { image_base64 = e.target.result; sendToServer(); };
     reader.readAsDataURL(fileInput.files[0]);
-  } else {
-    sendToServer();
+  } else { sendToServer(); }
+}
+
+/* ====== MODAL CHỌN ĐỒ ĐỂ ĐỔI (MỚI) ====== */
+function openOfferModal(targetItemId, toUser, targetName) {
+  _offerTargetItemId = targetItemId;
+  _offerTargetName   = targetName;
+  _offerToUser       = toUser;
+  _selectedOfferItem = null;
+
+  document.getElementById("offer-target-name").textContent = targetName;
+  document.getElementById("offer-msg").textContent = "";
+
+  const listEl = document.getElementById("offer-item-list");
+  listEl.innerHTML = '<p class="loading-text">⏳ Đang tải đồ của bạn...</p>';
+  document.getElementById("offer-overlay").classList.add("show");
+
+  // Gọi API lấy các món đồ available (approved + chưa bị lock bởi request pending)
+  call({ action: "getMyAvailableItems", user_id: user.user_id }).then(data => {
+    if (!Array.isArray(data) || data.length === 0) {
+      listEl.innerHTML = `
+        <div class="empty" style="padding:20px 0;">
+          <div class="empty-icon">😔</div>
+          <div>Bạn không có món đồ nào có thể đổi lúc này.<br>
+            <span style="font-size:12px;color:#94a3b8;">Món đồ cần được duyệt và chưa đang trong yêu cầu chờ xử lý.</span>
+          </div>
+        </div>`;
+      return;
+    }
+    listEl.innerHTML = data.map(item => `
+      <div class="offer-item" id="offer-${item.id}" onclick="selectOfferItem('${item.id}')">
+        ${item.hinh_anh
+          ? `<img src="${item.hinh_anh}" onerror="this.outerHTML='<div class=\\'offer-item-thumb-placeholder\\'>📦</div>';">`
+          : `<div class="offer-item-thumb-placeholder">📦</div>`}
+        <div class="offer-item-info">
+          <div class="offer-item-name">${item.ten_do}</div>
+          <div class="offer-item-desc">${item.mo_ta || "Không có mô tả"}</div>
+        </div>
+        <div class="offer-item-check" id="check-${item.id}">✓</div>
+      </div>`).join("");
+  }).catch(() => {
+    listEl.innerHTML = '<div class="empty">❌ Lỗi tải dữ liệu</div>';
+  });
+}
+
+function selectOfferItem(itemId) {
+  if (_selectedOfferItem) {
+    const old = document.getElementById("offer-" + _selectedOfferItem);
+    if (old) old.classList.remove("selected");
   }
+  _selectedOfferItem = itemId;
+  const el = document.getElementById("offer-" + itemId);
+  if (el) el.classList.add("selected");
+  document.getElementById("offer-msg").textContent = "";
+}
+
+function closeOfferModal(e) {
+  if (!e || e.target === document.getElementById("offer-overlay")) {
+    document.getElementById("offer-overlay").classList.remove("show");
+  }
+}
+
+function confirmExchange() {
+  if (!_selectedOfferItem) {
+    document.getElementById("offer-msg").textContent = "⚠️ Vui lòng chọn món đồ của bạn để đổi!";
+    return;
+  }
+  document.getElementById("offer-overlay").classList.remove("show");
+  call({
+    action: "requestExchange",
+    item_id: _offerTargetItemId,
+    offer_item_id: _selectedOfferItem,
+    from_user: user.user_id,
+    to_user: _offerToUser
+  })
+  .then(() => alert("✅ Đã gửi yêu cầu trao đổi! Chờ bạn kia phản hồi nhé."))
+  .catch(() => alert("❌ Lỗi gửi yêu cầu!"));
 }
 
 /* ====== YÊU CẦU ĐÃ GỬI ====== */
 function loadSentRequests() {
   const el = document.getElementById("sent-list");
   el.innerHTML = '<p class="loading-text">Đang tải...</p>';
-
   call({ action: "getMyRequests", user_id: user.user_id }).then(data => {
     if (!Array.isArray(data) || data.length === 0) {
       el.innerHTML = '<div class="empty" style="padding:30px 0;"><div class="empty-icon">📤</div><div>Chưa gửi yêu cầu nào</div></div>';
@@ -570,12 +591,12 @@ function loadSentRequests() {
       return `
         <div class="req-card">
           ${req.hinh_anh
-            ? `<img class="req-card-img" src="${req.hinh_anh}"
-                onerror="this.outerHTML='<div class=\\'req-card-img\\' style=\\'display:flex;align-items:center;justify-content:center;font-size:24px;\\'>📦</div>';">`
+            ? `<img class="req-card-img" src="${req.hinh_anh}" onerror="this.outerHTML='<div class=\\'req-card-img\\' style=\\'display:flex;align-items:center;justify-content:center;font-size:24px;\\'>📦</div>';">`
             : `<div class="req-card-img" style="display:flex;align-items:center;justify-content:center;font-size:24px;">📦</div>`}
           <div class="req-card-body">
             <div class="req-card-title">${req.ten_do}</div>
             <div class="req-card-sub">👤 ${req.to_name}</div>
+            ${req.offer_ten_do ? `<div class="req-card-offer">🎁 Đổi bằng: ${req.offer_ten_do}</div>` : ''}
             ${statusHtml}
           </div>
         </div>`;
@@ -587,7 +608,6 @@ function loadSentRequests() {
 function loadReceivedRequests() {
   const el = document.getElementById("received-list");
   el.innerHTML = '<p class="loading-text">Đang tải...</p>';
-
   call({ action: "getReceivedRequests", user_id: user.user_id }).then(data => {
     const badge = document.getElementById("badge-req");
     if (!Array.isArray(data) || data.length === 0) {
@@ -597,34 +617,33 @@ function loadReceivedRequests() {
     }
     badge.textContent = data.length;
     badge.style.display = "inline";
-
     el.innerHTML = data.map(req => `
       <div class="req-card" style="cursor:pointer;border-left-color:#f59e0b;" onclick="openModal(${JSON.stringify(req).replace(/"/g,'&quot;')})">
         ${req.hinh_anh
-          ? `<img class="req-card-img" src="${req.hinh_anh}"
-              onerror="this.outerHTML='<div class=\\'req-card-img\\' style=\\'display:flex;align-items:center;justify-content:center;font-size:24px;\\'>📦</div>';">`
+          ? `<img class="req-card-img" src="${req.hinh_anh}" onerror="this.outerHTML='<div class=\\'req-card-img\\' style=\\'display:flex;align-items:center;justify-content:center;font-size:24px;\\'>📦</div>';">`
           : `<div class="req-card-img" style="display:flex;align-items:center;justify-content:center;font-size:24px;">📦</div>`}
         <div class="req-card-body">
           <div class="req-card-title">${req.ten_do}</div>
           <div class="req-card-sub">👤 ${req.from_name}</div>
+          ${req.offer_ten_do ? `<div class="req-card-offer">🎁 Đổi bằng: ${req.offer_ten_do}</div>` : ''}
           <span class="req-card-status status-waiting">⏳ Chờ xử lý — Nhấn để xem</span>
         </div>
       </div>`).join("");
   }).catch(() => el.innerHTML = '<div class="empty">❌ Lỗi tải dữ liệu</div>');
 }
 
-/* ====== MODAL CHI TIẾT ====== */
+/* ====== MODAL CHI TIẾT YÊU CẦU NHẬN ĐƯỢC ====== */
 function openModal(req) {
   document.getElementById("modal-title").textContent = `Yêu cầu từ ${req.from_name}`;
   document.getElementById("modal-img-wrap").innerHTML = req.hinh_anh
-    ? `<img src="${req.hinh_anh}"
-        style="width:100%;height:200px;object-fit:cover;border-radius:10px;margin-bottom:14px;"
+    ? `<img src="${req.hinh_anh}" style="width:100%;height:200px;object-fit:cover;border-radius:10px;margin-bottom:14px;"
         onerror="this.outerHTML='<div class=\\'modal-img-placeholder\\'>📦</div>';">`
     : `<div class="modal-img-placeholder">📦</div>`;
   document.getElementById("modal-info").innerHTML = `
     <p><strong>Đồ muốn đổi:</strong> ${req.ten_do}</p>
     <p><strong>Mô tả:</strong> ${req.mo_ta || "Không có mô tả"}</p>
     <p><strong>Từ bạn:</strong> ${req.from_name}</p>
+    ${req.offer_ten_do ? `<p><strong>🎁 Đổi bằng:</strong> ${req.offer_ten_do}</p>` : ''}
   `;
   document.getElementById("modal-btns").innerHTML = `
     <button class="btn-green" style="flex:1;padding:12px;" onclick="handleExchange('accept','${req.id}')">✅ Chấp nhận</button>
@@ -652,16 +671,6 @@ function handleExchange(action, id) {
       loadSentRequests();
     })
     .catch(() => alert("❌ Lỗi kết nối!"));
-}
-
-/* ====== YÊU CẦU ĐỔI ====== */
-function exchange(item_id, to_user) {
-  if (String(to_user) === String(user.user_id)) return alert("Đây là đồ của bạn!");
-  if (!confirm("Gửi yêu cầu trao đổi món đồ này?")) return;
-
-  call({ action: "requestExchange", item_id, from_user: user.user_id, to_user })
-    .then(() => alert("✅ Đã gửi yêu cầu trao đổi! Chờ bạn kia phản hồi nhé."))
-    .catch(() => alert("❌ Lỗi gửi yêu cầu!"));
 }
 
 // Khởi động
