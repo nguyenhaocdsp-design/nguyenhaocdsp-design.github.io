@@ -239,7 +239,7 @@ body { font-family: 'Nunito', Arial, sans-serif; background: #f0faf8; min-height
 </div>
 
 <script>
-const API = "https://script.google.com/macros/s/AKfycbxB4cC9Mk1KJ1k6tXuyIfXRWMIPEa0Q7vm65VCbfG-mAz1_9Zjktp7hDDnKYKQsNL7X/exec";
+const API = "https://script.google.com/macros/s/AKfycbwpzEAvRtmiLlvxQqjNZQrTApbaklQhYSKcbVG95cACOPxMML0Jr05JwKAzTZ1iwngo/exec";
 
 const user = JSON.parse(localStorage.getItem("user") || "{}");
 if (!user || String(user.role || "").toLowerCase().trim() !== "teacher") {
@@ -272,6 +272,26 @@ function call(body) {
     headers: { "Content-Type": "text/plain;charset=utf-8" },
     body: JSON.stringify(body)
   }).then(r => r.text()).then(t => JSON.parse(t));
+}
+
+/* ====== RELOAD TẤT CẢ STATS ====== */
+function reloadStats() {
+  Promise.all([
+    call({ action: "getPending" }),
+    call({ action: "getMarket" }),
+    call({ action: "getExchanged" }),
+    call({ action: "getTransactions" })
+  ]).then(([pending, market, exchanged, trans]) => {
+    const p = Array.isArray(pending)   ? pending.length   : 0;
+    const m = Array.isArray(market)    ? market.length    : 0;
+    const x = Array.isArray(exchanged) ? exchanged.length : 0;
+    const t = Array.isArray(trans)     ? trans.length     : 0;
+    document.getElementById("stat-pending").textContent   = p;
+    document.getElementById("stat-approved").textContent  = m;
+    document.getElementById("stat-exchanged").textContent = x;
+    document.getElementById("stat-done").textContent      = t;
+    document.getElementById("count-pending").textContent  = p;
+  });
 }
 
 function imgHtml(url, alt) {
@@ -400,10 +420,7 @@ function approve(id) {
   call({ action: "approveItem", id }).then(data => {
     if (data.status === "approved") {
       loadPending();
-      // Cập nhật stat approved
-      call({ action: "getMarket" }).then(m => {
-        document.getElementById("stat-approved").textContent = Array.isArray(m) ? m.length : 0;
-      });
+      reloadStats();
     } else {
       alert("❌ Lỗi duyệt đồ!");
       if (card) card.style.opacity = "1";
@@ -423,6 +440,7 @@ function reject(id) {
   call({ action: "rejectItem", id }).then(data => {
     if (data.status === "rejected") {
       loadPending();
+      reloadStats();
     } else {
       alert("❌ Lỗi từ chối!");
       if (card) card.style.opacity = "1";
@@ -433,20 +451,8 @@ function reject(id) {
   });
 }
 
-// Khởi động - load stats
-Promise.all([
-  call({ action: "getPending" }),
-  call({ action: "getMarket" }),
-  call({ action: "getExchanged" }),
-  call({ action: "getTransactions" })
-]).then(([pending, market, exchanged, trans]) => {
-  document.getElementById("stat-pending").textContent   = Array.isArray(pending)   ? pending.length   : 0;
-  document.getElementById("stat-approved").textContent  = Array.isArray(market)    ? market.length    : 0;
-  document.getElementById("stat-exchanged").textContent = Array.isArray(exchanged) ? exchanged.length : 0;
-  document.getElementById("stat-done").textContent      = Array.isArray(trans)     ? trans.length     : 0;
-  document.getElementById("count-pending").textContent  = Array.isArray(pending)   ? pending.length   : 0;
-});
-
+// Khởi động
+reloadStats();
 loadPending();
 </script>
 </body>

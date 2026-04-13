@@ -339,7 +339,7 @@ body { font-family: 'Nunito', Arial, sans-serif; background: #f0f4ff; min-height
 </div>
 
 <script>
-const API = "https://script.google.com/macros/s/AKfycbxB4cC9Mk1KJ1k6tXuyIfXRWMIPEa0Q7vm65VCbfG-mAz1_9Zjktp7hDDnKYKQsNL7X/exec";
+const API = "https://script.google.com/macros/s/AKfycbwpzEAvRtmiLlvxQqjNZQrTApbaklQhYSKcbVG95cACOPxMML0Jr05JwKAzTZ1iwngo/exec";
 
 const user = JSON.parse(localStorage.getItem("user") || "{}");
 if (!user || String(user.role || "").toLowerCase().trim() !== "student") {
@@ -347,6 +347,13 @@ if (!user || String(user.role || "").toLowerCase().trim() !== "student") {
   window.location.href = "index.html";
 }
 document.getElementById("user-name").textContent = "👋 " + user.ho_ten;
+
+// Normalize ID: "1.0" → "1", đồng bộ với cách xử lý ở backend
+function normId(val) {
+  return String(val || "").trim().replace(/\.0+$/, "");
+}
+// Đảm bảo user_id luôn là dạng số nguyên chuẩn
+user.user_id = normId(user.user_id);
 
 // ---- State modal chọn đồ ----
 let _offerTargetItemId = null;
@@ -417,7 +424,7 @@ function loadMarket() {
       el.innerHTML = '<div class="empty"><div class="empty-icon">🏪</div><div>Chưa có đồ vật nào trong chợ</div></div>';
       return;
     }
-    const others = data.filter(item => String(item.user_id) !== String(user.user_id));
+    const others = data.filter(item => normId(item.user_id) !== normId(user.user_id));
     if (others.length === 0) {
       el.innerHTML = '<div class="empty"><div class="empty-icon">🏪</div><div>Chưa có đồ của bạn khác trong chợ</div></div>';
       return;
@@ -512,7 +519,7 @@ function openOfferModal(targetItemId, toUser, targetName) {
   document.getElementById("offer-overlay").classList.add("show");
 
   // Gọi API lấy các món đồ available (approved + chưa bị lock bởi request pending)
-  call({ action: "getMyAvailableItems", user_id: user.user_id }).then(data => {
+  call({ action: "getMyApprovedItems", user_id: user.user_id }).then(data => {
     if (!Array.isArray(data) || data.length === 0) {
       listEl.innerHTML = `
         <div class="empty" style="padding:20px 0;">
