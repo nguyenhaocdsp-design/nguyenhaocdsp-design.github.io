@@ -146,6 +146,7 @@ body { font-family: 'Nunito', Arial, sans-serif; background: #f0f4ff; min-height
 .badge-pending  { background: #fef3c7; color: #b45309; }
 .badge-approved { background: #dcfce7; color: #166534; }
 .badge-rejected { background: #fee2e2; color: #991b1b; }
+.badge-exchanged { background: #dbeafe; color: #1d4ed8; }
 
 /* FORM */
 .form-card {
@@ -366,7 +367,7 @@ body { font-family: 'Nunito', Arial, sans-serif; background: #f0f4ff; min-height
 </div>
 
 <script>
-const API = "https://script.google.com/macros/s/AKfycbxotCkVPuavvf3p-p3D-SYM5ldg4zqO4f3WqzUTaLYXmBXm7bEfm0i4OcDIs8qBMQ7R/exec";
+const API = "https://script.google.com/macros/s/AKfycbxcWI_Wl_a-u6AHA8LjTuDDRpr5y2e4MuWELPvSvtbNDlIZAJ2GVFyCAsMTIumkKgZd/exec";
 
 const user = JSON.parse(localStorage.getItem("user") || "{}");
 if (!user || String(user.role || "").toLowerCase().trim() !== "student") {
@@ -482,9 +483,10 @@ function loadMyItems() {
     }
     el.innerHTML = data.map(item => {
       const badgeMap = {
-        pending:  '<span class="badge badge-pending">⏳ Chờ duyệt</span>',
-        approved: '<span class="badge badge-approved">✅ Đã duyệt</span>',
-        rejected: '<span class="badge badge-rejected">❌ Từ chối</span>'
+        pending:    '<span class="badge badge-pending">⏳ Chờ duyệt</span>',
+        approved:   '<span class="badge badge-approved">✅ Đã duyệt</span>',
+        rejected:   '<span class="badge badge-rejected">❌ Từ chối</span>',
+        exchanged:  '<span class="badge badge-exchanged">🔄 Đã trao đổi</span>'
       };
       const badge = badgeMap[item.trang_thai] || "";
       return `

@@ -36,7 +36,7 @@ body { font-family: 'Nunito', Arial, sans-serif; background: #f0faf8; min-height
 .container { max-width: 1050px; margin: 24px auto; padding: 0 16px; }
 
 /* STATS */
-.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 24px; }
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 24px; }
 .stat-card {
   background: white; border-radius: 14px; padding: 20px;
   text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.06);
@@ -115,8 +115,9 @@ body { font-family: 'Nunito', Arial, sans-serif; background: #f0faf8; min-height
   display: inline-block; font-size: 11px; font-weight: 700;
   padding: 3px 10px; border-radius: 20px; margin-bottom: 10px;
 }
-.badge-approved { background: #dcfce7; color: #166534; }
-.badge-done { background: #dbeafe; color: #1d4ed8; }
+.badge-approved  { background: #dcfce7; color: #166534; }
+.badge-exchanged { background: #dbeafe; color: #1d4ed8; }
+.badge-done      { background: #f3e8ff; color: #7c3aed; }
 
 /* TRANSACTION TABLE */
 .trans-table-wrap {
@@ -165,11 +166,15 @@ body { font-family: 'Nunito', Arial, sans-serif; background: #f0faf8; min-height
     </div>
     <div class="stat-card">
       <div class="stat-num" id="stat-approved">-</div>
-      <div class="stat-label">✅ Đã duyệt</div>
+      <div class="stat-label">✅ Đã duyệt / Chờ đổi</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num" id="stat-exchanged">-</div>
+      <div class="stat-label">🔄 Đã trao đổi</div>
     </div>
     <div class="stat-card">
       <div class="stat-num" id="stat-done">-</div>
-      <div class="stat-label">🔄 Đã đổi thành công</div>
+      <div class="stat-label">📋 Giao dịch thành công</div>
     </div>
   </div>
 
@@ -181,8 +186,11 @@ body { font-family: 'Nunito', Arial, sans-serif; background: #f0faf8; min-height
     <button class="tab-btn" onclick="showTab('approved', this)">
       ✅ Đã duyệt / Chờ đổi
     </button>
+    <button class="tab-btn" onclick="showTab('exchanged', this)">
+      🔄 Đã trao đổi
+    </button>
     <button class="tab-btn" onclick="showTab('done', this)">
-      🔄 Đã đổi thành công
+      📋 Lịch sử giao dịch
     </button>
   </div>
 
@@ -200,7 +208,14 @@ body { font-family: 'Nunito', Arial, sans-serif; background: #f0faf8; min-height
     </div>
   </div>
 
-  <!-- ĐÃ ĐỔI THÀNH CÔNG -->
+  <!-- ĐÃ TRAO ĐỔI -->
+  <div class="section" id="tab-exchanged">
+    <div class="grid" id="exchanged-list">
+      <p class="loading-text">⏳ Đang tải...</p>
+    </div>
+  </div>
+
+  <!-- LỊCH SỬ GIAO DỊCH -->
   <div class="section" id="tab-done">
     <div class="trans-table-wrap">
       <table class="trans-table">
@@ -223,7 +238,7 @@ body { font-family: 'Nunito', Arial, sans-serif; background: #f0faf8; min-height
 </div>
 
 <script>
-const API = "https://script.google.com/macros/s/AKfycbxotCkVPuavvf3p-p3D-SYM5ldg4zqO4f3WqzUTaLYXmBXm7bEfm0i4OcDIs8qBMQ7R/exec";
+const API = "https://script.google.com/macros/s/AKfycbxcWI_Wl_a-u6AHA8LjTuDDRpr5y2e4MuWELPvSvtbNDlIZAJ2GVFyCAsMTIumkKgZd/exec";
 
 const user = JSON.parse(localStorage.getItem("user") || "{}");
 if (!user || String(user.role || "").toLowerCase().trim() !== "teacher") {
@@ -238,8 +253,9 @@ function showTab(id, el) {
   document.getElementById("tab-" + id).classList.add("active");
   if (el) el.classList.add("active");
 
-  if (id === "approved") loadApproved();
-  if (id === "done") loadTransactions();
+  if (id === "approved")  loadApproved();
+  if (id === "exchanged") loadExchanged();
+  if (id === "done")      loadTransactions();
 }
 
 function logout() {
@@ -322,6 +338,32 @@ function loadApproved() {
   }).catch(() => el.innerHTML = '<div class="empty">❌ Lỗi tải dữ liệu</div>');
 }
 
+/* ====== ĐÃ TRAO ĐỔI ====== */
+function loadExchanged() {
+  const el = document.getElementById("exchanged-list");
+  el.innerHTML = '<p class="loading-text">⏳ Đang tải...</p>';
+
+  call({ action: "getExchanged" }).then(data => {
+    document.getElementById("stat-exchanged").textContent = Array.isArray(data) ? data.length : 0;
+
+    if (!Array.isArray(data) || data.length === 0) {
+      el.innerHTML = '<div class="empty"><div class="empty-icon">🔄</div><div>Chưa có món đồ nào được trao đổi</div></div>';
+      return;
+    }
+    el.innerHTML = data.map(item => `
+      <div class="card">
+        ${imgHtml(item.hinh_anh, item.ten_do)}
+        <div class="card-body">
+          <span class="badge badge-exchanged">🔄 Đã trao đổi</span>
+          <div class="card-title">${item.ten_do}</div>
+          <div class="card-owner">👤 ${item.ho_ten}</div>
+          <div class="card-desc">${item.mo_ta || "Không có mô tả"}</div>
+        </div>
+      </div>
+    `).join("");
+  }).catch(() => el.innerHTML = '<div class="empty">❌ Lỗi tải dữ liệu</div>');
+}
+
 /* ====== ĐÃ ĐỔI THÀNH CÔNG ====== */
 function loadTransactions() {
   const tbody = document.getElementById("trans-list");
@@ -393,12 +435,14 @@ function reject(id) {
 Promise.all([
   call({ action: "getPending" }),
   call({ action: "getMarket" }),
+  call({ action: "getExchanged" }),
   call({ action: "getTransactions" })
-]).then(([pending, market, trans]) => {
-  document.getElementById("stat-pending").textContent  = Array.isArray(pending) ? pending.length : 0;
-  document.getElementById("stat-approved").textContent = Array.isArray(market)  ? market.length  : 0;
-  document.getElementById("stat-done").textContent     = Array.isArray(trans)   ? trans.length   : 0;
-  document.getElementById("count-pending").textContent = Array.isArray(pending) ? pending.length : 0;
+]).then(([pending, market, exchanged, trans]) => {
+  document.getElementById("stat-pending").textContent   = Array.isArray(pending)   ? pending.length   : 0;
+  document.getElementById("stat-approved").textContent  = Array.isArray(market)    ? market.length    : 0;
+  document.getElementById("stat-exchanged").textContent = Array.isArray(exchanged) ? exchanged.length : 0;
+  document.getElementById("stat-done").textContent      = Array.isArray(trans)     ? trans.length     : 0;
+  document.getElementById("count-pending").textContent  = Array.isArray(pending)   ? pending.length   : 0;
 });
 
 loadPending();
