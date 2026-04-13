@@ -81,11 +81,31 @@ body { font-family: 'Nunito', Arial, sans-serif; background: #f0faf8; min-height
 }
 .card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.11); }
 .card-img-placeholder {
-  width: 100%; height: 180px;
+  width: 100%; height: 160px;
   background: linear-gradient(135deg, #ccfbf1, #f0fdf9);
   display: flex; align-items: center; justify-content: center;
   font-size: 40px; color: #99f6e4;
 }
+/* LIGHTBOX */
+.lightbox-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.85); z-index: 9999;
+  align-items: center; justify-content: center; padding: 16px;
+  cursor: zoom-out;
+}
+.lightbox-overlay.show { display: flex; }
+.lightbox-overlay img {
+  max-width: 92vw; max-height: 88vh;
+  border-radius: 12px; object-fit: contain;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+  cursor: default;
+}
+.lightbox-close {
+  position: fixed; top: 16px; right: 20px;
+  color: white; font-size: 28px; cursor: pointer;
+  line-height: 1; font-weight: 700; opacity: 0.8;
+}
+.lightbox-close:hover { opacity: 1; }
 .card-body { padding: 14px 16px 16px; }
 .card-title { font-size: 15px; font-weight: 700; color: #1e293b; margin-bottom: 4px; }
 .card-owner { font-size: 13px; color: #0f766e; margin-bottom: 8px; font-weight: 600; }
@@ -238,8 +258,14 @@ body { font-family: 'Nunito', Arial, sans-serif; background: #f0faf8; min-height
 
 </div>
 
+<!-- LIGHTBOX -->
+<div class="lightbox-overlay" id="lightbox" onclick="closeLightbox()">
+  <span class="lightbox-close" onclick="closeLightbox()">✕</span>
+  <img id="lightbox-img" src="" alt="" onclick="event.stopPropagation()">
+</div>
+
 <script>
-const API = "https://script.google.com/macros/s/AKfycbwpzEAvRtmiLlvxQqjNZQrTApbaklQhYSKcbVG95cACOPxMML0Jr05JwKAzTZ1iwngo/exec";
+const API = "https://script.google.com/macros/s/AKfycbzdylxhh1j09a2mHtVmQT_aVCsB86SJ56Jaq0qg7eX5u80hHDJeWs95BnYHDp4XcRq9/exec";
 
 const user = JSON.parse(localStorage.getItem("user") || "{}");
 if (!user || String(user.role || "").toLowerCase().trim() !== "teacher") {
@@ -274,32 +300,14 @@ function call(body) {
   }).then(r => r.text()).then(t => JSON.parse(t));
 }
 
-/* ====== RELOAD TẤT CẢ STATS ====== */
-function reloadStats() {
-  Promise.all([
-    call({ action: "getPending" }),
-    call({ action: "getMarket" }),
-    call({ action: "getExchanged" }),
-    call({ action: "getTransactions" })
-  ]).then(([pending, market, exchanged, trans]) => {
-    const p = Array.isArray(pending)   ? pending.length   : 0;
-    const m = Array.isArray(market)    ? market.length    : 0;
-    const x = Array.isArray(exchanged) ? exchanged.length : 0;
-    const t = Array.isArray(trans)     ? trans.length     : 0;
-    document.getElementById("stat-pending").textContent   = p;
-    document.getElementById("stat-approved").textContent  = m;
-    document.getElementById("stat-exchanged").textContent = x;
-    document.getElementById("stat-done").textContent      = t;
-    document.getElementById("count-pending").textContent  = p;
-  });
-}
-
 function imgHtml(url, alt) {
   if (!url) return `<div class="card-img-placeholder">📦</div>`;
-  return `<img style="width:100%;height:180px;object-fit:cover;display:block;"
-    src="${url}" alt="${alt || ''}"
-    onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-    <div class="card-img-placeholder" style="display:none;">📦</div>`;
+  return `<div style="width:100%;height:160px;overflow:hidden;cursor:zoom-in;" onclick="openLightbox('${url}')">
+    <img style="width:100%;height:160px;object-fit:cover;display:block;transition:transform 0.2s;"
+      onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'"
+      src="${url}" alt="${alt || ''}"
+      onerror="this.parentElement.outerHTML='<div class=\\'card-img-placeholder\\'>📦</div>';">
+  </div>`;
 }
 
 /* ====== CHỜ DUYỆT ====== */
@@ -420,7 +428,10 @@ function approve(id) {
   call({ action: "approveItem", id }).then(data => {
     if (data.status === "approved") {
       loadPending();
-      reloadStats();
+      // Cập nhật stat approved
+      call({ action: "getMarket" }).then(m => {
+        document.getElementById("stat-approved").textContent = Array.isArray(m) ? m.length : 0;
+      });
     } else {
       alert("❌ Lỗi duyệt đồ!");
       if (card) card.style.opacity = "1";
@@ -440,7 +451,6 @@ function reject(id) {
   call({ action: "rejectItem", id }).then(data => {
     if (data.status === "rejected") {
       loadPending();
-      reloadStats();
     } else {
       alert("❌ Lỗi từ chối!");
       if (card) card.style.opacity = "1";
@@ -451,9 +461,33 @@ function reject(id) {
   });
 }
 
-// Khởi động
-reloadStats();
+// Khởi động - load stats
+Promise.all([
+  call({ action: "getPending" }),
+  call({ action: "getMarket" }),
+  call({ action: "getExchanged" }),
+  call({ action: "getTransactions" })
+]).then(([pending, market, exchanged, trans]) => {
+  document.getElementById("stat-pending").textContent   = Array.isArray(pending)   ? pending.length   : 0;
+  document.getElementById("stat-approved").textContent  = Array.isArray(market)    ? market.length    : 0;
+  document.getElementById("stat-exchanged").textContent = Array.isArray(exchanged) ? exchanged.length : 0;
+  document.getElementById("stat-done").textContent      = Array.isArray(trans)     ? trans.length     : 0;
+  document.getElementById("count-pending").textContent  = Array.isArray(pending)   ? pending.length   : 0;
+});
+
 loadPending();
+
+/* ====== LIGHTBOX ====== */
+function openLightbox(url) {
+  document.getElementById("lightbox-img").src = url;
+  document.getElementById("lightbox").classList.add("show");
+  document.body.style.overflow = "hidden";
+}
+function closeLightbox() {
+  document.getElementById("lightbox").classList.remove("show");
+  document.body.style.overflow = "";
+}
+document.addEventListener("keydown", e => { if (e.key === "Escape") closeLightbox(); });
 </script>
 </body>
 </html>

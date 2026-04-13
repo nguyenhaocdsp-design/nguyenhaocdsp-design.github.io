@@ -60,11 +60,31 @@ body { font-family: 'Nunito', Arial, sans-serif; background: #f0f4ff; min-height
 .card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.11); }
 .card-img { width: 100%; height: 180px; object-fit: cover; display: block; }
 .card-img-placeholder {
-  width: 100%; height: 180px;
+  width: 100%; height: 160px;
   background: linear-gradient(135deg, #e8eeff, #f0f4ff);
   display: flex; align-items: center; justify-content: center;
   font-size: 40px; color: #c7d2fe;
 }
+/* LIGHTBOX */
+.lightbox-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.85); z-index: 9999;
+  align-items: center; justify-content: center; padding: 16px;
+  cursor: zoom-out;
+}
+.lightbox-overlay.show { display: flex; }
+.lightbox-overlay img {
+  max-width: 92vw; max-height: 88vh;
+  border-radius: 12px; object-fit: contain;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+  cursor: default;
+}
+.lightbox-close {
+  position: fixed; top: 16px; right: 20px;
+  color: white; font-size: 28px; cursor: pointer;
+  line-height: 1; font-weight: 700; opacity: 0.8;
+}
+.lightbox-close:hover { opacity: 1; }
 .card-body { padding: 14px 16px 16px; }
 .card-title { font-size: 15px; font-weight: 700; color: #1e293b; margin-bottom: 4px; }
 .card-owner { font-size: 13px; color: #4a6cf7; margin-bottom: 6px; font-weight: 600; }
@@ -338,8 +358,14 @@ body { font-family: 'Nunito', Arial, sans-serif; background: #f0f4ff; min-height
   </div>
 </div>
 
+<!-- LIGHTBOX -->
+<div class="lightbox-overlay" id="lightbox" onclick="closeLightbox()">
+  <span class="lightbox-close" onclick="closeLightbox()">✕</span>
+  <img id="lightbox-img" src="" alt="" onclick="event.stopPropagation()">
+</div>
+
 <script>
-const API = "https://script.google.com/macros/s/AKfycbwpzEAvRtmiLlvxQqjNZQrTApbaklQhYSKcbVG95cACOPxMML0Jr05JwKAzTZ1iwngo/exec";
+const API = "https://script.google.com/macros/s/AKfycbzdylxhh1j09a2mHtVmQT_aVCsB86SJ56Jaq0qg7eX5u80hHDJeWs95BnYHDp4XcRq9/exec";
 
 const user = JSON.parse(localStorage.getItem("user") || "{}");
 if (!user || String(user.role || "").toLowerCase().trim() !== "student") {
@@ -347,13 +373,6 @@ if (!user || String(user.role || "").toLowerCase().trim() !== "student") {
   window.location.href = "index.html";
 }
 document.getElementById("user-name").textContent = "👋 " + user.ho_ten;
-
-// Normalize ID: "1.0" → "1", đồng bộ với cách xử lý ở backend
-function normId(val) {
-  return String(val || "").trim().replace(/\.0+$/, "");
-}
-// Đảm bảo user_id luôn là dạng số nguyên chuẩn
-user.user_id = normId(user.user_id);
 
 // ---- State modal chọn đồ ----
 let _offerTargetItemId = null;
@@ -407,11 +426,13 @@ function call(body) {
 }
 
 function imgHtml(url, alt, h) {
-  const height = h || 180;
+  const height = h || 160;
   if (!url) return `<div class="card-img-placeholder" style="height:${height}px;">📦</div>`;
-  return `<div style="width:100%;height:${height}px;overflow:hidden;">
-    <img src="${url}" alt="${alt||''}" style="width:100%;height:${height}px;object-fit:cover;display:block;"
-      onerror="this.parentElement.innerHTML='<div class=\\'card-img-placeholder\\' style=\\'height:${height}px;\\'>📦</div>';">
+  return `<div style="width:100%;height:${height}px;overflow:hidden;cursor:zoom-in;" onclick="openLightbox('${url}')">
+    <img src="${url}" alt="${alt||''}"
+      style="width:100%;height:${height}px;object-fit:cover;display:block;transition:transform 0.2s;"
+      onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'"
+      onerror="this.parentElement.outerHTML='<div class=\\'card-img-placeholder\\' style=\\'height:${height}px;\\'>📦</div>';">
   </div>`;
 }
 
@@ -424,7 +445,7 @@ function loadMarket() {
       el.innerHTML = '<div class="empty"><div class="empty-icon">🏪</div><div>Chưa có đồ vật nào trong chợ</div></div>';
       return;
     }
-    const others = data.filter(item => normId(item.user_id) !== normId(user.user_id));
+    const others = data.filter(item => String(item.user_id) !== String(user.user_id));
     if (others.length === 0) {
       el.innerHTML = '<div class="empty"><div class="empty-icon">🏪</div><div>Chưa có đồ của bạn khác trong chợ</div></div>';
       return;
@@ -519,7 +540,7 @@ function openOfferModal(targetItemId, toUser, targetName) {
   document.getElementById("offer-overlay").classList.add("show");
 
   // Gọi API lấy các món đồ available (approved + chưa bị lock bởi request pending)
-  call({ action: "getMyApprovedItems", user_id: user.user_id }).then(data => {
+  call({ action: "getMyAvailableItems", user_id: user.user_id }).then(data => {
     if (!Array.isArray(data) || data.length === 0) {
       listEl.innerHTML = `
         <div class="empty" style="padding:20px 0;">
@@ -666,7 +687,10 @@ function closeModal(e) {
   }
 }
 
+let _exchangeProcessing = false;
 function handleExchange(action, id) {
+  if (_exchangeProcessing) return;
+  _exchangeProcessing = true;
   const apiAction = action === "accept" ? "acceptExchange" : "rejectExchange";
   call({ action: apiAction, id })
     .then(data => {
@@ -677,11 +701,24 @@ function handleExchange(action, id) {
       loadReceivedRequests();
       loadSentRequests();
     })
-    .catch(() => alert("❌ Lỗi kết nối!"));
+    .catch(() => alert("❌ Lỗi kết nối!"))
+    .finally(() => { _exchangeProcessing = false; });
 }
 
 // Khởi động
 loadMarket();
+
+/* ====== LIGHTBOX ====== */
+function openLightbox(url) {
+  document.getElementById("lightbox-img").src = url;
+  document.getElementById("lightbox").classList.add("show");
+  document.body.style.overflow = "hidden";
+}
+function closeLightbox() {
+  document.getElementById("lightbox").classList.remove("show");
+  document.body.style.overflow = "";
+}
+document.addEventListener("keydown", e => { if (e.key === "Escape") closeLightbox(); });
 </script>
 </body>
 </html>
